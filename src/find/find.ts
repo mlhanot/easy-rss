@@ -1,5 +1,6 @@
 import dialog from "./find.pug";
 import "./find.scss";
+import { findYoutube } from "./youtube";
 
 const feedLinks: NodeListOf<HTMLLinkElement> = document.querySelectorAll(
 	"link[type=\"application/rss+xml\"], link[type=\"application/atom+xml\"]"
@@ -11,6 +12,10 @@ for (const f of feedLinks) {
 		name: f.title,
 		url: f.href
 	});
+}
+
+if (window.location.hostname.endsWith('.youtube.com')) {
+  findYoutube(feeds);
 }
 
 const html = dialog({

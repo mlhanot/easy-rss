@@ -12,7 +12,7 @@ module.exports = env => ({
 		"find/find": "./src/find/find.ts",
 		"background/background": "./src/background/background.ts"
 	},
-	devtool: env.prod ? "" : "inline-source-map",
+	devtool: env.prod ? false : "inline-source-map",
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: "[name].js",
@@ -27,14 +27,14 @@ module.exports = env => ({
 			{
 				test: /\.scss$/,
 				use: [
-					{ loader: MiniCssExtractPlugin.loader, options: { sourceMap: true } },
+					{ loader: MiniCssExtractPlugin.loader },
 					{ loader: "css-loader", options: { sourceMap: true } },
 					{ loader: "sass-loader", options: { sourceMap: true } }
 				]
 			},
 			{
 				test: /\.pug$/,
-				loader: "pug-loader"
+				loader: "@webdiscus/pug-loader"
 			}
 		]
 	},
