@@ -7,6 +7,7 @@ const feedLinks: NodeListOf<HTMLLinkElement> = document.querySelectorAll(
 );
 
 const feeds: Feed[] = [];
+const reason = {str : ""};
 for (const f of feedLinks) {
 	feeds.push({
 		name: f.title,
@@ -14,13 +15,14 @@ for (const f of feedLinks) {
 	});
 }
 
-if (window.location.hostname.endsWith('.youtube.com')) {
-  findYoutube(feeds);
+if (window.location.hostname.endsWith(".youtube.com")) {
+  findYoutube(feeds,reason);
 }
 
 const html = dialog({
 	css: browser.runtime.getURL("find/find.css"),
-	feeds
+	feeds,
+  reason
 });
 
 const div = document.createElement("div");

@@ -1,4 +1,10 @@
+# Editor
 *.swp
+
+# Generated content
 node_modules
 dist
 web-ext-artifacts
+
+# Log
+yarn-error.log

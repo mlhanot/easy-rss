@@ -2,6 +2,8 @@
   link(rel="stylesheet", href=css)
   if feeds.length === 0
     h2 Sorry, no feeds were found
+    unless reason.str.length === 0
+      p #{reason.str}
     button#exit Ok
   else
     h2 Add the following feeds?
