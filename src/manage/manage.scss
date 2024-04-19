@@ -31,9 +31,25 @@ section {
 
 .setting {
   display: flex;
-
-  input {
-    flex: 1;
+  align-items: center;
+  & label {
+    margin: 1ex;
+    align-self: baseline;
+  }
+  & input[type=checkbox] {
+    align-self: baseline;
+  }
+  & output {
+    margin: 1ex;
+  }
+  & details {
+    max-width: 400px;
+    background: #00000026;
+    border-radius: 10px;
+  }
+  & summary {
+    list-style: none;
+    font-size: large;
   }
 }
 

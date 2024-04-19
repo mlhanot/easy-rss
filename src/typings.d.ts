@@ -16,6 +16,11 @@ interface Entry {
 	icon: string;
 	author: string;
 	thumbnail?: string;
+  duration?: string;
+}
+
+interface LengthDB {
+  [key: string]: string;
 }
 
 type StorageValue = browser.storage.StorageValue;

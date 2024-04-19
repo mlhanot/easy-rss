@@ -22,6 +22,7 @@ async function populateEntries(): Promise<void> {
 	}
 
 	let i = 0;
+  const displayDuration = (await browser.storage.sync.get("fetchDuration")).fetchDuration;
 	for (const entry of entries) {
 		if (i > 100) break;
 		if (read.indexOf(entry.id) !== -1) continue;
@@ -36,7 +37,9 @@ async function populateEntries(): Promise<void> {
 			entry.date
 		).toLocaleDateString();
 		if (entry.thumbnail)
-			el.querySelector(".thumbnail")!.setAttribute("src", entry.thumbnail);
+			el.querySelector(".thumbnail img")!.setAttribute("src", entry.thumbnail);
+    if (displayDuration && entry.duration)
+      el.querySelector(".thumbnail .duration")!.textContent = entry.duration;
 
 		entryEl.addEventListener("click", async e => {
 			read.push(entry.id);

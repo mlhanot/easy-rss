@@ -26,6 +26,17 @@
         <input type="range" id="interval" min="1" max="60" />
         <output id="intervalOutput">1 minute</output>
       </div>
+      <div class="setting">
+        <input type="checkbox" id="fetchDuration"/>
+        <label for="fetchDuration">Display content length</label>
+        <details>
+          <summary>&#9432</summary>
+          This will cause the extension to fetch the content of every entry to attempt to determine the length of the content.
+          </br>
+          Supported sites:
+          Youtube.com
+        </summary>
+      </div>
       <button id="saveSettings">Save</button>
     </section>
     <section>

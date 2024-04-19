@@ -3,21 +3,23 @@ import { populateFeeds } from "./populate";
 
 const interval = document.getElementById("interval") as HTMLInputElement;
 const intervalOutput = document.getElementById("intervalOutput")!;
+const fetchDuration = document.getElementById("fetchDuration") as HTMLInputElement;
 const saveSettings = document.getElementById("saveSettings")!;
 
 const minutes = (s: string) => `${s} ${s === "1" ? "minute" : "minutes"}`;
 
 saveSettings.addEventListener("click", () => {
-	browser.storage.sync.set({ interval: parseInt(interval.value, 10) });
+	browser.storage.sync.set({ interval: parseInt(interval.value, 10), fetchDuration: fetchDuration.checked });
 });
 
 interval.addEventListener("input", () => {
 	intervalOutput.textContent = minutes(interval.value);
 });
 
-browser.storage.sync.get({ interval: 5, feeds: [] }).then(results => {
+browser.storage.sync.get({ interval: 5, fetchDuration: false, feeds: [] }).then(results => {
 	interval.value = results.interval.toString();
 	intervalOutput.textContent = minutes(results.interval.toString());
+  fetchDuration.checked = results.fetchDuration;
 	populateFeeds(results.feeds);
 });
 

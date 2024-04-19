@@ -96,11 +96,33 @@ $areas: "icon", "title", "read", "thumbnail", "author", "date", "thumbnail";
 }
 
 .thumbnail {
-  max-height: 3em;
+  position: relative;
+  height: 3em;
   transform-origin: center right;
+  z-index: 0;
 
   transition: transform 0.25s cubic-bezier(0.07, 0.95, 0, 1);
   &:hover {
     transform: scale(4);
+    z-index: 1;
+
+    .duration {
+      opacity: 1;
+    }
+  }
+
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+  .duration {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transition: opacity 0.25s ease-out;
+    opacity: 0;
+    background: rgba($ink-80,0.55);
+    border-radius: 1ex;
   }
 }
+

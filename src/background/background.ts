@@ -1,4 +1,5 @@
 import { fetchEntries } from "./parser";
+import { fetchLength } from "./length";
 
 browser.storage.sync.get(["entries", "read"]).then(({ entries, read }) => {
 	if (entries) {
@@ -30,6 +31,21 @@ async function fetch() {
 	entries.sort(sorter);
 
 	browser.storage.local.set({ entries: entries as unknown as StorageValue });
+
+  // Fetch length after setting the other entry as it can request a lot of pages
+  if ((await browser.storage.sync.get({ fetchDuration: false})).fetchDuration) return;
+  const lengthDB: LengthDB = (await browser.storage.local.get({lengthDB: {}})).lengthDB;
+  const lengthPromise: Array<Promise<void>> = [];
+  for (const entry of entries) {
+    lengthPromise.push(fetchLength(entry,lengthDB));
+  }
+  await Promise.allSettled(lengthPromise);
+  for (const entry of entries) {
+    if (typeof entry.duration !== "undefined") lengthDB[entry.id] = entry.duration;
+  }
+
+  browser.storage.local.set({entries: entries as unknown as StorageValue, 
+                             lengthDB: lengthDB as unknown as StorageValue});
 }
 fetch();
 
