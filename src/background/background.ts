@@ -33,7 +33,7 @@ async function fetch() {
 	browser.storage.local.set({ entries: entries as unknown as StorageValue });
 
   // Fetch length after setting the other entry as it can request a lot of pages
-  if ((await browser.storage.sync.get({ fetchDuration: false})).fetchDuration) return;
+  if (!(await browser.storage.sync.get({ fetchDuration: false})).fetchDuration) return;
   const lengthDB: LengthDB = (await browser.storage.local.get({lengthDB: {}})).lengthDB;
   const lengthPromise: Array<Promise<void>> = [];
   for (const entry of entries) {
