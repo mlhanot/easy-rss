@@ -17,8 +17,6 @@ const attributes: { [x: string]: Option[] } = {
 	title: [{ selector: "title" }]
 };
 
-const domainRegex = /[/?#]/;
-
 function parse(el: Element, feed: Feed) {
 	const entry: Entry = {
 		id: "",
@@ -43,11 +41,8 @@ function parse(el: Element, feed: Feed) {
 	}
 
 	// Get icon
-	let domain = feed.url;
-	if (feed.url.startsWith("http://")) domain = domain.slice(7);
-	if (feed.url.startsWith("https://")) domain = domain.slice(8);
-	entry.icon =
-    "https://www.google.com/s2/favicons?domain=" + domain.split(domainRegex)[0];
+	let domain = (new URL(feed.url)).origin;
+	entry.icon = domain + "/favicon.ico";
 
 	// Get thumbnail
 	const thumbnail = el.getElementsByTagName("media:thumbnail")[0];
