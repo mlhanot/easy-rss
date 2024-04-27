@@ -41,7 +41,7 @@ function parse(el: Element, feed: Feed) {
 	}
 
 	// Get icon
-	let domain = (new URL(feed.url)).origin;
+	const domain = (new URL(feed.url)).origin;
 	entry.icon = domain + "/favicon.ico";
 
 	// Get thumbnail

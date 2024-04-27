@@ -1,20 +1,20 @@
 {
   "applications": {
     "gecko": {
-      "id": "easyrss@srkomodo.com",
+      "id": "easierrss@mlhanot.com",
       "strict_min_version": "56.0"
     }
   },
 
   "manifest_version": 2,
-  "version": "1.3.2",
+  "version": "2.0.0",
 
-  "name": "Easy RSS",
+  "name": "Easier RSS",
   "description": "An RSS reader for both the common man and the power user",
-  "homepage_url": "https://github.com/SrKomodo/easy-rss",
+  "homepage_url": "https://github.com/mlhanot/easy-rss",
   "developer": {
-    "name": "SrKomodo",
-    "url": "https://github.com/SrKomodo"
+    "name": "Marien Hanot",
+    "url": "https://github.com/mlhanot"
   },
 
   "icons": {

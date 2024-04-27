@@ -1,4 +1,7 @@
-# Easy RSS
+# Easier RSS
+
+**This is a fork of [Easy RSS](https://github.com/arguablykomodo/easy-rss).
+Mainly done to maintain as well as adding few features.
 
 Are you an avid consumer of internet media? Are you frustrated by the lack of a
 consistent way of getting notifications for the content that you love? If you
@@ -42,3 +45,7 @@ Easy RSS includes features such as:
 ![Full Popup](images/full_popup.png "Full Popup")
 
 ![Settings](images/settings.png "Settings")
+
+## Additional features:
+
+- Fetch content length on certain sites
