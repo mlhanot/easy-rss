@@ -1,8 +1,12 @@
 # Easier RSS
 
-**This is a fork of [Easy RSS](https://github.com/arguablykomodo/easy-rss).
-Mainly done to maintain as well as adding few features.
+This is a fork of [Easy RSS](https://github.com/arguablykomodo/easy-rss).
 
+## Additional features:
+
+- Fetch content length on certain sites (currently youtube)
+
+# Original README
 Are you an avid consumer of internet media? Are you frustrated by the lack of a
 consistent way of getting notifications for the content that you love? If you
 answer yes to any of these questions, then RSS feeds are the solution for you!
@@ -46,6 +50,4 @@ Easy RSS includes features such as:
 
 ![Settings](images/settings.png "Settings")
 
-## Additional features:
 
-- Fetch content length on certain sites

@@ -26,6 +26,12 @@ add.addEventListener("click", () => {
 
 // Open tools
 const tools = document.getElementById("tools")!;
+browser.storage.sync.get({expandMenu: false}).then((results) => {
+  if (results.expandMenu) {
+    tools.classList.add("open");
+  }
+});
+
 document
 	.getElementById("openTools")!
 	.addEventListener("click", () => tools.classList.toggle("open"));

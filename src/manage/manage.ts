@@ -4,22 +4,27 @@ import { populateFeeds } from "./populate";
 const interval = document.getElementById("interval") as HTMLInputElement;
 const intervalOutput = document.getElementById("intervalOutput")!;
 const fetchDuration = document.getElementById("fetchDuration") as HTMLInputElement;
+const expandMenu = document.getElementById("expandMenu") as HTMLInputElement;
 const saveSettings = document.getElementById("saveSettings")!;
 
 const minutes = (s: string) => `${s} ${s === "1" ? "minute" : "minutes"}`;
 
 saveSettings.addEventListener("click", () => {
-	browser.storage.sync.set({ interval: parseInt(interval.value, 10), fetchDuration: fetchDuration.checked });
+	browser.storage.sync.set({ interval: parseInt(interval.value, 10), 
+                           fetchDuration: fetchDuration.checked,
+                           expandMenu: expandMenu.checked
+  });
 });
 
 interval.addEventListener("input", () => {
 	intervalOutput.textContent = minutes(interval.value);
 });
 
-browser.storage.sync.get({ interval: 5, fetchDuration: false, feeds: [] }).then(results => {
+browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, feeds: [] }).then(results => {
 	interval.value = results.interval.toString();
 	intervalOutput.textContent = minutes(results.interval.toString());
   fetchDuration.checked = results.fetchDuration;
+  expandMenu.checked = results.expandMenu;
 	populateFeeds(results.feeds);
 });
 
