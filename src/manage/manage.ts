@@ -32,9 +32,6 @@ browser.storage.onChanged.addListener(changes => {
 	if (changes.feeds) populateFeeds(changes.feeds.newValue);
 });
 
-import { sync } from "./sync";
-document.getElementById("sync")!.addEventListener("click", sync);
-
 import { exportFeeds } from "./export";
 document.getElementById("export")!.addEventListener("click", exportFeeds);
 
