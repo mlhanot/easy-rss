@@ -28,7 +28,7 @@
 
   "browser_action": {
     "browser_style": true,
-    "default_title": "Easy RSS",
+    "default_title": "Easier RSS",
     "default_popup": "popup/popup.html",
     "theme_icons": [
       {
