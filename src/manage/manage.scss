@@ -64,10 +64,6 @@ h2 {
   min-width: 20ch;
 }
 
-#sync {
-  margin: 0.5em 0;
-}
-
 .buttonGroup {
   display: flex;
   margin-bottom: 1em;
@@ -83,6 +79,10 @@ h2 {
       margin-left: 0.25em;
     }
   }
+}
+
+#addFeed {
+  z-index: 2;
 }
 
 .feed {

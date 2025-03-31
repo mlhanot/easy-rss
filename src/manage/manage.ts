@@ -40,3 +40,10 @@ const upload = document.getElementById("upload") as HTMLInputElement;
 const importEl = document.getElementById("import")!;
 importEl.addEventListener("click", () => upload.click());
 upload.addEventListener("change", importFeeds);
+
+import { addFeedUI } from "./addFeed";
+addFeedUI();
+document.getElementById("addFeed")!.addEventListener("click", () => {
+  document.getElementById("addFeed")!.style.pointerEvents = "none";
+  document.getElementById("newfeed")!.style.display = 'block';
+});
