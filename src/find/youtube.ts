@@ -12,7 +12,8 @@ function findYoutube(feeds: Feed[], reason: {str: string;}) {
 		if (title !== null && title !== undefined && matched !== null) {
 			feeds.push({
 				name: title,
-				url: "https://www.youtube.com/feeds/videos.xml?channel_id=" + matched[1]
+				url: "https://www.youtube.com/feeds/videos.xml?channel_id=" + matched[1],
+        cats: []
 			});
 		}
   } else {
@@ -27,7 +28,8 @@ function findYoutube(feeds: Feed[], reason: {str: string;}) {
       }
       feeds.push({
         name: f.text,
-        url: "https://www.youtube.com/feeds/videos.xml?channel_id=" + matched[1]
+        url: "https://www.youtube.com/feeds/videos.xml?channel_id=" + matched[1],
+        cats: []
       });
     }
     if (feeds.length == 0) {

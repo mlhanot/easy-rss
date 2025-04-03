@@ -12,7 +12,8 @@ const reason = {str : ""};
 for (const f of feedLinks) {
 	feeds.push({
 		name: f.title,
-		url: f.href
+		url: f.href,
+    cats: []
 	});
 }
 
@@ -42,7 +43,8 @@ shadow.getElementById("add")!.addEventListener("click", async () => {
 			const url = feed.querySelector(".url") as HTMLInputElement;
       addFeed({
 				name: name.value,
-				url: url.value
+				url: url.value,
+        cats: []
 			});
 		}
 	}

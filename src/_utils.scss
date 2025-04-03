@@ -19,7 +19,7 @@ button {
   outline: 0 !important;
 
   transition: background 0.25s cubic-bezier(0.07, 0.95, 0, 1);
-  &:hover {
+  &:hover, &:focus {
     background: $ink-70;
     box-shadow: 0 0 0 2px $ink-60;
   }

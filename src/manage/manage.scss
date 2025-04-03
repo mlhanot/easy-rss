@@ -80,11 +80,117 @@ h2 {
     }
   }
 }
+.cloud_cont {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 600px;
+  .cloud_cont {
+    max-width: 550px;
+    min-width: 300px;
+  }
+  .cloud_item {
+    padding: 0.5em;
+    border-radius: 4px;
+    background-color: $ink-60;
+    margin: 0.25em;
+    max-width: 40%;
+    height: fit-content;
+    & > span {
+      margin: 1ex;
+    }
+    & > img {
+      padding: 4px;
+      border-radius: 4px;
+      @include hover();
+      &:active {
+        background: rgba(black, 0.1);
+      }
+      vertical-align: middle;
+    }
+  }
+}
+#CatManager {
+  flex-wrap: nowrap;
+}
+#addCat {
+  transition: background 0.25s cubic-bezier(0.07, 0.95, 0, 1);
+  &:hover {
+    background: $ink-70;
+    box-shadow: 0 0 0 2px $ink-60;
+  }
+  &:active {
+    background: $ink-80;
+  }
+  & > img {
+    pointer-events: none;
+  }
+}
+#addFeedCat,
+#newCatDialog {
+  z-index: 2147483647; // 2^31-1, literally the biggest z-index possible
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+
+  background: $ink-70;
+  color: white;
+  font: caption;
+  box-shadow: 0 0 0 100vmax rgba(black, 0.75);
+
+  &.disabled {
+    display: none;
+  }
+  h2 {
+    margin: 0.25em 0 0.5em;
+    white-space: pre-wrap;
+  }
+  input[type="text"] {
+    background: $ink-60;
+    padding: 4px;
+  }
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1ch;
+    margin-top: 0.5em;
+  }
+}
+#addFeedCatSelect {
+  background: $ink-60;
+  border-radius: 4px;
+  border-style: inset;
+  border-color: $ink-50;
+  max-height: 150px;
+  max-width: 450px;
+  overflow: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  & > div {
+    border-radius: 8px;
+    padding: 0.5ex;
+    border-color: $ink-60;
+    border-style: solid;
+  }
+  div.selected {
+    background: $ink-70;
+    border-style: outset;
+  }
+  div.selected.last_selected {
+    border-style: ridge;
+  }
+}
 
 #addFeed {
   z-index: 2;
 }
-
 .feed {
   display: grid;
   grid-template-columns: max-content 1fr max-content;
@@ -98,6 +204,7 @@ h2 {
     text-align: right;
   }
 
+  .add,
   .delete {
     padding: 4px;
     border-radius: 4px;
@@ -105,6 +212,14 @@ h2 {
 
     &:active {
       background: rgba(black, 0.1);
+    }
+  }
+
+  .feedCat {
+    justify-content: start;
+    max-width: 430px;
+    .cloud_item {
+      background-color: $ink-70;
     }
   }
 }

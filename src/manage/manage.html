@@ -8,12 +8,20 @@
     <title>Easier RSS</title>
   </head>
 
+  <template id="catItem">
+    <div class="cloud_item">
+      <span></span>
+      <img src="../assets/delete.svg" class="delete" />
+    </div>
+  </template>
   <template id="feed">
     <article class="feed">
       <label>Name:</label> <input type="text" class="name" />
       <div></div>
       <label>Url:</label> <input type="url" class="url" />
       <img src="../assets/delete.svg" class="delete" />
+      <label>Categories:</label> <div class="feedCat cloud_cont"></div>
+      <img src="../assets/plus.svg" class="add" />
     </article>
   </template>
 
@@ -44,6 +52,24 @@
       <button id="saveSettings">Save</button>
     </section>
     <section>
+      <h2>Category</h2>
+      <div class="cloud_cont" id="CatManager">
+        <div class="cloud_cont" id="CatList">
+        </div>
+        <div class="cloud_item" id="addCat">
+          <img src="../assets/plus.svg" class="add">
+        </div>
+      </div>
+      <div id="newCatDialog" class="disabled">
+        <h2>Add a new category:</h2>
+        <input type="text" />
+        <div class="buttons">
+          <button class="YES">Add</button>
+          <button class="NO">Cancel</button>
+        </div>
+      </div>
+    </section>
+    <section>
       <h2>Feeds</h2>
       <div class="buttonGroup">
         <button id="import">Import from .opml</button>
@@ -54,6 +80,15 @@
       <button id="addFeed">Add new feed</button>
       <div id="newfeed"></div>
       <div id="feeds"></div>
+      <div id="addFeedCat" class="disabled">
+        <h2>Add categories to <span></span></h2>
+        <div id="addFeedCatSelect">
+        </div>
+        <div class="buttons">
+          <button class="YES">Add</button>
+          <button class="NO">Cancel</button>
+        </div>
+      </div>
     </section>
     <script src="manage.js"></script>
   </body>

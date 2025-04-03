@@ -1,6 +1,8 @@
 import "./manage.scss";
 import { populateFeeds } from "./populate";
+import { populateCats } from "./populateCat";
 
+// Settings section
 const interval = document.getElementById("interval") as HTMLInputElement;
 const intervalOutput = document.getElementById("intervalOutput")!;
 const fetchDuration = document.getElementById("fetchDuration") as HTMLInputElement;
@@ -15,23 +17,50 @@ saveSettings.addEventListener("click", () => {
                            expandMenu: expandMenu.checked
   });
 });
-
 interval.addEventListener("input", () => {
 	intervalOutput.textContent = minutes(interval.value);
 });
 
-browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, feeds: [] }).then(results => {
+// Init page
+const extVersion = browser.runtime.getManifest().version;
+browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, feeds: [], cats: [] }).then(results => {
 	interval.value = results.interval.toString();
 	intervalOutput.textContent = minutes(results.interval.toString());
   fetchDuration.checked = results.fetchDuration;
   expandMenu.checked = results.expandMenu;
+  populateCats(results.cats);
 	populateFeeds(results.feeds);
 });
 
 browser.storage.onChanged.addListener(changes => {
+  if (changes.cats) populateCats(changes.cats.newValue);
 	if (changes.feeds) populateFeeds(changes.feeds.newValue);
 });
 
+// Cat section
+const newCatDiagEl = document.getElementById("newCatDialog") as HTMLElement;
+const newCatDiagText = newCatDiagEl.querySelector("input[type=\"text\"]") as HTMLInputElement;
+document.getElementById("addCat")!.addEventListener("click", ()=> {
+  newCatDiagEl.classList.remove("disabled");
+  newCatDiagText.focus();
+});
+newCatDiagEl.querySelector("button.YES")!.addEventListener("click", async ()=> {
+  const name =  newCatDiagText.value;
+  newCatDiagText.value = "";
+  newCatDiagEl.classList.add("disabled");
+  if (name.length > 0) {
+    const cats: string[] = (await browser.storage.sync.get({ cats: []})).cats;
+    if (!cats.includes(name)) {
+      browser.storage.sync.set({ cats: cats.concat(name) as unknown as StorageValue});
+    }
+  }
+});
+newCatDiagEl.querySelector("button.NO")!.addEventListener("click", ()=> {
+  newCatDiagText.value = "";
+  newCatDiagEl.classList.add("disabled");
+});
+
+// Feeds section
 import { exportFeeds } from "./export";
 document.getElementById("export")!.addEventListener("click", exportFeeds);
 
@@ -47,3 +76,6 @@ document.getElementById("addFeed")!.addEventListener("click", () => {
   document.getElementById("addFeed")!.style.pointerEvents = "none";
   document.getElementById("newfeed")!.style.display = 'block';
 });
+
+import { createMultiSelect } from "./select";
+document.getElementById("addFeedCatSelect")!.addEventListener("click",createMultiSelect,true);

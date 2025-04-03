@@ -1,18 +1,6 @@
 import { fetchEntries } from "./parser";
 import { fetchLength } from "./length";
-
-browser.storage.sync.get(["entries", "read"]).then(({ entries, read }) => {
-	if (entries) {
-		console.log("migrating entry data to local storage...");
-		browser.storage.local.set({ entries });
-		browser.storage.sync.remove("entries");
-	}
-	if (read) {
-		console.log("migrating read data to local storage...");
-		browser.storage.local.set({ read });
-		browser.storage.sync.remove("read");
-	}
-});
+import { updateData } from "./updateData";
 
 const sorter = (a: Entry, b: Entry) =>
 	new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -47,39 +35,42 @@ async function fetch() {
   browser.storage.local.set({entries: entries as unknown as StorageValue, 
                              lengthDB: lengthDB as unknown as StorageValue});
 }
-fetch();
 
-browser.storage.sync.get({ interval: 5 }).then(results => {
-	browser.alarms.create("fetch", { periodInMinutes: results.interval });
-	browser.alarms.onAlarm.addListener(fetch);
-});
+updateData().then(()=>{
+  fetch();
 
-browser.storage.onChanged.addListener(async (changes, areaName) => {
-	if (changes.feeds) {
-		fetch();
-	}
+  browser.storage.sync.get({ interval: 5 }).then(results => {
+    browser.alarms.create("fetch", { periodInMinutes: results.interval });
+    browser.alarms.onAlarm.addListener(fetch);
+  });
 
-	if (changes.interval) {
-		await browser.alarms.clear("fetch");
-		browser.alarms.create("fetch", {
-			periodInMinutes: changes.interval.newValue
-		});
-	}
+  browser.storage.onChanged.addListener(async (changes, areaName) => {
+    if (changes.feeds) {
+      fetch();
+    }
 
-	if ((changes.read || changes.entries) && areaName === "local") {
-		const read: string[] = changes.read && changes.read.newValue
-			? changes.read.newValue
-			: (await browser.storage.local.get({ read: [] })).read;
-		const entries: Entry[] = changes.entries && changes.entries.newValue
-			? changes.entries.newValue
-			: (await browser.storage.local.get({ entries: [] })).entries;
+    if (changes.interval) {
+      await browser.alarms.clear("fetch");
+      browser.alarms.create("fetch", {
+        periodInMinutes: changes.interval.newValue
+      });
+    }
 
-		let unread = 0;
-		for (const entry of entries) if (read.indexOf(entry.id) === -1) unread++;
+    if ((changes.read || changes.entries) && areaName === "local") {
+      const read: string[] = changes.read && changes.read.newValue
+        ? changes.read.newValue
+        : (await browser.storage.local.get({ read: [] })).read;
+      const entries: Entry[] = changes.entries && changes.entries.newValue
+        ? changes.entries.newValue
+        : (await browser.storage.local.get({ entries: [] })).entries;
 
-		browser.browserAction.setBadgeBackgroundColor({ color: "#dd2e44" });
-		browser.browserAction.setBadgeText({
-			text: unread === 0 ? "" : unread.toString()
-		});
-	}
+      let unread = 0;
+      for (const entry of entries) if (read.indexOf(entry.id) === -1) unread++;
+
+      browser.browserAction.setBadgeBackgroundColor({ color: "#dd2e44" });
+      browser.browserAction.setBadgeText({
+        text: unread === 0 ? "" : unread.toString()
+      });
+    }
+  });
 });

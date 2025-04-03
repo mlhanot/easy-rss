@@ -14,7 +14,7 @@ add.addEventListener("click", () => {
 	input.type = "url";
 	input.addEventListener("change", async () => {
 		const feeds: Feed[] = (await browser.storage.sync.get({ feeds: [] })).feeds;
-		feeds.unshift({ url: input.value, name: "" });
+		feeds.unshift({ url: input.value, name: "", cats: [] });
 		browser.storage.sync.set({ feeds: feeds as unknown as StorageValue });
 
 		add.removeChild(input);

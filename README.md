@@ -4,7 +4,7 @@ This is a fork of [Easy RSS](https://github.com/arguablykomodo/easy-rss).
 
 ## Additional features:
 
-- Updated various dependency and fixed some issue on the original project
+- Updated various dependency and fixed some issues on the original project
 - Fetch content length on certain sites (currently youtube)
 
 # Original README

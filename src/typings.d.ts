@@ -6,6 +6,7 @@ declare module "*.pug" {
 interface Feed {
 	name: string;
 	url: string;
+  cats: string[];
 }
 
 interface Entry {
@@ -24,3 +25,7 @@ interface LengthDB {
 }
 
 type StorageValue = browser.storage.StorageValue;
+
+interface StorageObject {
+  [key: string]: any;
+}
