@@ -7,6 +7,36 @@ This is a fork of [Easy RSS](https://github.com/arguablykomodo/easy-rss).
 - Updated various dependency and fixed some issues on the original project
 - Fetch content length on certain sites (currently youtube)
 
+## Build instructions
+
+### Pre-requisites
+
+- Yarn [Homepage](https://github.com/yarnpkg/yarn)
+
+1. Clone the repositoy
+
+```bash
+git clone https://github.com/mlhanot/easy-rss.git
+cd easy-rss
+```
+
+2. Install the dependencies
+
+_Note: The following instructions are for Debian which use the command `yarnpkg`. 
+Most other distributions will instead use `yarn`._
+
+```bash
+yarnpkg install
+```
+
+3. Build the extension
+
+```bash
+yarnpkg dist
+```
+
+The extension can be found in the `web-ext-artifacts` folder.
+
 # Original README
 Are you an avid consumer of internet media? Are you frustrated by the lack of a
 consistent way of getting notifications for the content that you love? If you
