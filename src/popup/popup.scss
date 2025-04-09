@@ -13,19 +13,29 @@ body {
   color: white;
 }
 
-nav {
+$nav-height: 38px;
+#toolsNav {
   @include shadow;
   position: sticky;
   top: 0;
   display: flex;
   justify-content: end;
-
   background: $ink-70;
+  height: $nav-height;
+  box-sizing: content-box;
+  z-index: 10;
+  transition: padding-bottom 0.25s cubic-bezier(0.07, 0.95, 0, 1) 0.1s;
+  &.lowered {
+    transition: padding-bottom 0.25s cubic-bezier(0.07, 0.95, 0, 1);
+    padding-bottom: $nav-height;
+  }
 }
 
 #openTools {
-  padding: 0.5em;
   @include hover;
+  height: 24px;
+  margin: 0 1ex;
+  align-self: center;
 }
 
 #tools {
@@ -43,7 +53,52 @@ nav {
   transition: clip-path 0.25s cubic-bezier(0.07, 0.95, 0, 1);
   clip-path: inset(0 0 0 100%);
   &.open {
+    transition: clip-path 0.25s cubic-bezier(0.07, 0.95, 0, 1) 0.1s;
     clip-path: inset(0 0 0 0);
+  }
+}
+
+#categories {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: $nav-height;
+  max-width: calc(100% - $nav-height);
+  margin-right: $nav-height;
+  z-index: 11;
+  display: flex;
+  justify-content: left;
+  background: $ink-70;
+  transition: top 0.25s cubic-bezier(0.07, 0.95, 0, 1) 0.1s;
+  &.lowered {
+    transition: top 0.25s cubic-bezier(0.07, 0.95, 0, 1);
+    top: $nav-height;
+  }
+}
+#catAll {
+  @include hover;
+  border-right: 2px inset white;
+  align-self: center;
+  padding: 0 1ex 0.5ex 1ex;
+  margin: 1px 1ex 0 1ex;
+  height: fit-content;
+  border-radius: 8px 0 0 8px;
+  &.selected {
+    background: $ink-50;
+  }
+}
+#catSelect {
+  display: flex;
+  overflow: scroll;
+  align-items: safe center;
+  div {
+    @include hover;
+    border-radius: 8px;
+    height: fit-content;
+    padding: 0 1ex 0.5ex 1ex;
+  }
+  div.selected {
+    background: $ink-50;
   }
 }
 
@@ -87,6 +142,8 @@ $areas: "icon", "title", "read", "thumbnail", "author", "date", "thumbnail";
 }
 
 .read {
+  @include hover;
+  border-radius: 4px;
   justify-self: flex-end;
 }
 

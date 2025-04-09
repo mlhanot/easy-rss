@@ -25,6 +25,7 @@ function parse(el: Element, feed: Feed) {
 		date: "",
 		icon: "",
 		author: "",
+    feedUrl: "",
 	};
 
 	for (const attribute in attributes) {
@@ -40,6 +41,8 @@ function parse(el: Element, feed: Feed) {
 		}
 	}
 
+  // Mark origin
+  entry.feedUrl= feed.url;
 	// Get icon
 	const domain = (new URL(feed.url)).origin;
 	entry.icon = domain + "/favicon.ico";

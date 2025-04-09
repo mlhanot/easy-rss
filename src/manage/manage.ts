@@ -77,5 +77,5 @@ document.getElementById("addFeed")!.addEventListener("click", () => {
   document.getElementById("newfeed")!.style.display = 'block';
 });
 
-import { createMultiSelect } from "./select";
+import { createMultiSelect } from "../ui/select";
 document.getElementById("addFeedCatSelect")!.addEventListener("click",createMultiSelect,true);
