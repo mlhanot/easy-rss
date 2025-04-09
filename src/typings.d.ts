@@ -1,8 +1,3 @@
-declare module "*.pug" {
-	const generator: (params: { [x: string]: unknown }) => string;
-	export default generator;
-}
-
 interface Feed {
 	name: string;
 	url: string;

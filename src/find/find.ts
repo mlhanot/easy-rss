@@ -1,5 +1,5 @@
-import dialog from "./find.pug";
 import "./find.scss";
+import { dialog } from "./dialog";
 import { addFeed } from "./addFeed";
 import { findYoutube } from "./youtube";
 
@@ -21,17 +21,14 @@ if (window.location.hostname.endsWith(".youtube.com")) {
   findYoutube(feeds,reason);
 }
 
-const html = dialog({
-	css: browser.runtime.getURL("find/find.css"),
-	feeds,
-  reason
-});
-
 const div = document.createElement("div");
 (div.style as { all: string }).all = "initial";
 const shadow = div.attachShadow({ mode: "open" });
-// This is safe because it goes through a template engine (pugjs) that makes sure everything is sanitized
-shadow.innerHTML = html;
+shadow.appendChild(dialog(
+  browser.runtime.getURL("find/find.css"),
+  feeds,
+  reason
+));
 document.body.appendChild(div);
 
 shadow.getElementById("exit")!.addEventListener("click", () => div.remove());
