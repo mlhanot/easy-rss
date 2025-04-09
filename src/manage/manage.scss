@@ -10,7 +10,7 @@ body {
   background: $ink-80;
   color: white;
   font: caption;
-  -moz-user-select: none;
+  user-select: none;
 
   & > * {
     grid-column: 2 / 3;
