@@ -56,9 +56,22 @@ document.getElementById("clear")!.addEventListener("click", async () => {
 		entries: [],
 		read: []
 	});
-
-	for (const entry of entries)
-		if (read.indexOf(entry.id) === -1) read.push(entry.id);
+  const feeds : Feed[]= (await browser.storage.sync.get({feeds: []})).feeds;
+  const dispAll = document.getElementById("catAll")!.classList.contains("selected");
+  const dispCats = Array.from(document.getElementById("catSelect")!.querySelectorAll(".selected"),(el)=>el.textContent);
+  function shouldDisplay(url : string) {
+    const feed = feeds.find((el)=>el.url === url);
+    if (!feed) return false;
+    for (const cat of feed.cats) {
+      if (dispCats.includes(cat)) {
+        return true;
+      }
+    }
+    return false;
+  }
+	for (const entry of entries) {
+		if (read.indexOf(entry.id) === -1 && (dispAll || shouldDisplay(entry.feedUrl))) read.push(entry.id);
+  }
 	browser.storage.local.set({ read });
 });
 
