@@ -144,7 +144,9 @@ $areas: "icon", "title", "read", "thumbnail", "author", "date", "thumbnail";
 .read {
   @include hover;
   border-radius: 4px;
+  padding: 1.5px;
   justify-self: flex-end;
+  align-self: flex-start;
 }
 
 .author,
