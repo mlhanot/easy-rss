@@ -35,8 +35,8 @@ function parse(el: Element, feed: Feed) {
 			const element = el.querySelector(option.selector);
 			if (element) {
 				if (option.attribute)
-					entry[attribute as Key] = element.getAttribute(option.attribute)!;
-				else entry[attribute as Key] = element.textContent!;
+					entry[attribute as Key] = element.getAttribute(option.attribute)??"";
+				else entry[attribute as Key] = element.textContent??"";
 			}
 		}
 	}
@@ -49,7 +49,7 @@ function parse(el: Element, feed: Feed) {
 
 	// Get thumbnail
 	const thumbnail = el.getElementsByTagName("media:thumbnail")[0];
-	if (thumbnail) entry.thumbnail = thumbnail.getAttribute("url")!;
+	if (thumbnail) entry.thumbnail = thumbnail.getAttribute("url")??"";
 
 	return entry as Entry;
 }
@@ -59,8 +59,19 @@ const parser = new DOMParser();
 async function fetchEntries(feed: Feed): Promise<Entry[]> {
 	const entries: Entry[] = [];
 	const src = await (fetch(feed.url).then(
-    (value) => {return value.text();},
-    (reason) => {console.warn(reason); return "";}));
+    (value) => {
+    if (value.ok) {
+      return value.text();
+    } else {
+      console.warn("Failed to retrieve rss feed from ",feed.url);
+      console.warn("Got ",value.status);
+      return "";
+    }},
+    (reason) => {
+      console.warn("Failed to retrieve rss feed from ",feed.url);
+      console.warn(reason); 
+      return "";
+    }));
   if (src.length == 0) return entries;
 	const xml = parser.parseFromString(src, "application/xml");
 	for (const el of xml.querySelectorAll("entry, item"))
