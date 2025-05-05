@@ -1,0 +1,13 @@
+{
+ "addons": {
+  "easierrss@mlhanot.com": {
+   "updates": [
+    {
+     "version": "2.1.0",
+     "browser_specific_settings": { "gecko": { "strict_min_version": "69.0" } },
+     "update_link": "https://github.com/mlhanot/easy-rss/releases/download/v2.1.0/easier_rss-2.1.0.xpi"
+    }
+   ]
+  }
+ }
+}
