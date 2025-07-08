@@ -28,25 +28,6 @@ document.getElementById("find")!.addEventListener("click", () => {
 	browser.tabs.executeScript(undefined, { file: "/find/find.js" });
 });
 
-// Add new feed
-const add = document.getElementById("add") as HTMLDivElement;
-add.addEventListener("click", () => {
-	add.textContent = "URL: ";
-	const input = document.createElement("input");
-	input.type = "url";
-	input.addEventListener("change", async () => {
-		const feeds: Feed[] = (await browser.storage.sync.get({ feeds: [] })).feeds;
-		feeds.unshift({ url: input.value, name: "", cats: [] });
-		browser.storage.sync.set({ feeds: feeds as unknown as StorageValue });
-
-		add.removeChild(input);
-		add.textContent = "Add new feed";
-	});
-	add.appendChild(input);
-	input.focus();
-});
-
-
 // Mark all as read
 document.getElementById("clear")!.addEventListener("click", async () => {
 	const {
