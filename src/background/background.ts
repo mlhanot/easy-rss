@@ -5,9 +5,12 @@ import { updateData } from "./updateData";
 const sorter = (a: Entry, b: Entry) =>
 	new Date(b.date).getTime() - new Date(a.date).getTime();
 
-async function fetch() {
+async function fetchFeeds() {
+  const displayText : boolean = !(await browser.storage.sync.get({hideBadgeText: false})).hideBadgeText;
 	browser.browserAction.setBadgeBackgroundColor({ color: "#3b88c3" });
-	browser.browserAction.setBadgeText({ text: "🕒" });
+  if (displayText) {
+  	browser.browserAction.setBadgeText({ text: "🕒" });
+  }
 	const feeds: Feed[] = (await browser.storage.sync.get({ feeds: [] })).feeds;
 
 	const toFetch: Array<Promise<Entry[]>> = [];
@@ -37,21 +40,21 @@ async function fetch() {
 }
 
 updateData().then(()=>{
-  fetch();
+  fetchFeeds();
 
   browser.storage.sync.get({ interval: 5 }).then(results => {
-    browser.alarms.create("fetch", { periodInMinutes: results.interval });
-    browser.alarms.onAlarm.addListener(fetch);
+    browser.alarms.create("fetchFeeds", { periodInMinutes: results.interval });
+    browser.alarms.onAlarm.addListener(fetchFeeds);
   });
 
   browser.storage.onChanged.addListener(async (changes, areaName) => {
     if (changes.feeds) {
-      fetch();
+      fetchFeeds();
     }
 
     if (changes.interval) {
-      await browser.alarms.clear("fetch");
-      browser.alarms.create("fetch", {
+      await browser.alarms.clear("fetchFeeds");
+      browser.alarms.create("fetchFeeds", {
         periodInMinutes: changes.interval.newValue
       });
     }
@@ -67,9 +70,10 @@ updateData().then(()=>{
       let unread = 0;
       for (const entry of entries) if (read.indexOf(entry.id) === -1) unread++;
 
+      const hideText : boolean = (await browser.storage.sync.get({hideBadgeText: false})).hideBadgeText;
       browser.browserAction.setBadgeBackgroundColor({ color: "#dd2e44" });
       browser.browserAction.setBadgeText({
-        text: unread === 0 ? "" : unread.toString()
+        text: (unread === 0 || hideText) ? "" : unread.toString()
       });
     }
   });

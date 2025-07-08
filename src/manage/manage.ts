@@ -7,6 +7,7 @@ const interval = document.getElementById("interval") as HTMLInputElement;
 const intervalOutput = document.getElementById("intervalOutput")!;
 const fetchDuration = document.getElementById("fetchDuration") as HTMLInputElement;
 const expandMenu = document.getElementById("expandMenu") as HTMLInputElement;
+const hideBadgeTextMenu = document.getElementById("hideBadgeTextMenu") as HTMLInputElement;
 const saveSettings = document.getElementById("saveSettings")!;
 
 const minutes = (s: string) => `${s} ${s === "1" ? "minute" : "minutes"}`;
@@ -14,7 +15,8 @@ const minutes = (s: string) => `${s} ${s === "1" ? "minute" : "minutes"}`;
 saveSettings.addEventListener("click", () => {
 	browser.storage.sync.set({ interval: parseInt(interval.value, 10), 
                            fetchDuration: fetchDuration.checked,
-                           expandMenu: expandMenu.checked
+                           expandMenu: expandMenu.checked,
+                           hideBadgeText: hideBadgeTextMenu.checked
   });
 });
 interval.addEventListener("input", () => {
@@ -23,7 +25,7 @@ interval.addEventListener("input", () => {
 
 // Init page
 const extVersion = browser.runtime.getManifest().version;
-browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, feeds: [], cats: [] }).then(results => {
+browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, hideBadgeText: false, feeds: [], cats: [] }).then(results => {
 	interval.value = results.interval.toString();
 	intervalOutput.textContent = minutes(results.interval.toString());
   fetchDuration.checked = results.fetchDuration;
