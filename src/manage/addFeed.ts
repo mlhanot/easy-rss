@@ -37,7 +37,7 @@ async function addFeedUI(): Promise<void> {
   // Manage add categories popup
   const catsCont = el.querySelector(".feedCat") as HTMLElement;
   function clickYes() {
-    const newcats = Array.from(addCatSelect.selectedOptions,(cat: HTMLElement)=>cat.textContent??"");
+    const newcats = Array.from(addCatSelect.querySelectorAll(".selected"),(cat: Element)=>cat.textContent??"");
     newcats.forEach((cat) => { // Create elements in the html page instead of using storage
       const elCat = document.importNode(catTemplate.content,true);
       const elCatContent = elCat.firstElementChild as HTMLElement;
@@ -69,7 +69,7 @@ async function addFeedUI(): Promise<void> {
     const selectedCats = getCatsArray();
     catList.forEach((cat)=> {
       if (!selectedCats.includes(cat)) {
-        const opt = document.createElement("option");
+        const opt = document.createElement("div");
         opt.textContent = cat;
         addCatSelect.appendChild(opt);
       }
