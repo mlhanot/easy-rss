@@ -1,3 +1,5 @@
+import { getFeeds, setFeeds } from "../background/feedsInterface";
+
 const input = document.getElementById("upload") as HTMLInputElement;
 
 async function importFeeds(): Promise<void> {
@@ -29,7 +31,7 @@ async function importFeeds(): Promise<void> {
       }
     }
 
-		const oldFeeds: Feed[] = (await browser.storage.sync.get({ feeds: [] })).feeds;
+		const oldFeeds = await getFeeds();
 		// Remove duplicates
 		let i = oldFeeds.length;
 		while (i--)
@@ -39,7 +41,8 @@ async function importFeeds(): Promise<void> {
     const cats: string[] = (catList)? Array.from(catList.querySelectorAll("outline[type=\"cat\"]"),
                                                 (cat)=>cat.getAttribute("text")??"")
                                     : [];
-		browser.storage.sync.set({ feeds: oldFeeds.concat(feeds) as unknown as StorageValue, cats: cats as unknown as StorageValue });
+    setFeeds(oldFeeds.concat(feeds));
+		browser.storage.sync.set({ cats: cats as unknown as StorageValue });
 		location.reload();
 	};
 	reader.readAsText(file);

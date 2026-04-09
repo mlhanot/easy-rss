@@ -1,3 +1,5 @@
+import { getFeeds } from "../background/feedsInterface";
+
 const entryTemplate = document.getElementById("entry") as HTMLTemplateElement;
 const entriesEl = document.getElementById("entries")!;
 
@@ -26,7 +28,7 @@ async function populateEntries(): Promise<void> {
   const displayDuration = (await browser.storage.sync.get("fetchDuration")).fetchDuration;
   const dispAll = document.getElementById("catAll")!.classList.contains("selected");
   const dispCats = Array.from(document.getElementById("catSelect")!.querySelectorAll(".selected"),(el)=>el.textContent);
-  const feeds : Feed[]= (await browser.storage.sync.get({feeds: []})).feeds;
+  const feeds = await getFeeds();
   function shouldDisplay(url : string) {
     const feed = feeds.find((el)=>el.url === url);
     if (!feed) return false;

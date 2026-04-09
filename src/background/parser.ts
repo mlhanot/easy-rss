@@ -63,8 +63,7 @@ async function fetchEntries(feed: Feed): Promise<Entry[]> {
     if (value.ok) {
       return value.text();
     } else {
-      console.warn("Failed to retrieve rss feed from ",feed.url);
-      console.warn("Got ",value.status);
+      console.warn("Failed to retrieve rss feed from",feed.url, " Error:",value.status);
       return "";
     }},
     (reason) => {

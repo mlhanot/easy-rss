@@ -1,6 +1,7 @@
 import { fetchEntries } from "./parser";
 import { fetchLength } from "./length";
 import { updateData } from "./updateData";
+import { getFeeds } from "./feedsInterface";
 
 const sorter = (a: Entry, b: Entry) =>
 	new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -11,7 +12,7 @@ async function fetchFeeds() {
   if (displayText) {
   	browser.browserAction.setBadgeText({ text: "🕒" });
   }
-	const feeds: Feed[] = (await browser.storage.sync.get({ feeds: [] })).feeds;
+	const feeds = await getFeeds();
 
 	const toFetch: Array<Promise<Entry[]>> = [];
 	for (const feed of feeds) {
@@ -21,6 +22,11 @@ async function fetchFeeds() {
 	const entries = ([] as Entry[]).concat(...(await Promise.all(toFetch)));
 	entries.sort(sorter);
 
+  if (entries.length == 0) { // onChanged is not fired when nothing is pushed
+    browser.browserAction.setBadgeBackgroundColor({ color: "#dd2e44" });
+    browser.browserAction.setBadgeText({ text: "" });
+    return;
+  }
 	browser.storage.local.set({ entries: entries as unknown as StorageValue });
 
   // Fetch length after setting the other entry as it can request a lot of pages
@@ -48,7 +54,7 @@ updateData().then(()=>{
   });
 
   browser.storage.onChanged.addListener(async (changes, areaName) => {
-    if (changes.feeds) {
+    if (changes.feedsChanged) {
       fetchFeeds();
     }
 

@@ -1,3 +1,5 @@
+import { getFeeds, setFeeds } from "../background/feedsInterface";
+
 const catTemplate = document.getElementById("catItem") as HTMLTemplateElement;
 const catListEl = document.getElementById("CatList")!;
 
@@ -17,7 +19,7 @@ async function populateCats(cats: string[]): Promise<void> {
 		const name = el.querySelector("span") as HTMLElement;
 		name.textContent = cat;
 		el.querySelector(".delete")!.addEventListener("click", async () => {
-      const feeds = (await browser.storage.sync.get("feeds")).feeds as unknown as Feed[];
+      const feeds = await getFeeds();
       feeds.forEach((feed) => {
         feed.cats.forEach((feedCat,k) => {
           if (feedCat === cat) {
@@ -26,7 +28,8 @@ async function populateCats(cats: string[]): Promise<void> {
         });
       });
 			cats.splice(i, 1);
-			browser.storage.sync.set({ feeds: feeds as unknown as StorageValue, cats: cats as unknown as StorageValue });
+      setFeeds(feeds);
+			browser.storage.sync.set({ cats: cats as unknown as StorageValue });
 		});
 
 		catListEl.appendChild(el);

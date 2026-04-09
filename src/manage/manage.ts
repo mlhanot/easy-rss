@@ -1,6 +1,7 @@
 import "./manage.scss";
 import { populateFeeds } from "./populate";
 import { populateCats } from "./populateCat";
+import { getFeeds } from "../background/feedsInterface";
 
 // Settings section
 const interval = document.getElementById("interval") as HTMLInputElement;
@@ -25,18 +26,18 @@ interval.addEventListener("input", () => {
 
 // Init page
 const extVersion = browser.runtime.getManifest().version;
-browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, hideBadgeText: false, feeds: [], cats: [] }).then(results => {
+browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, hideBadgeText: false, cats: [] }).then(results => {
 	interval.value = results.interval.toString();
 	intervalOutput.textContent = minutes(results.interval.toString());
   fetchDuration.checked = results.fetchDuration;
   expandMenu.checked = results.expandMenu;
   populateCats(results.cats);
-	populateFeeds(results.feeds);
 });
+getFeeds().then(feeds => populateFeeds(feeds));
 
 browser.storage.onChanged.addListener(changes => {
   if (changes.cats) populateCats(changes.cats.newValue);
-	if (changes.feeds) populateFeeds(changes.feeds.newValue);
+	if (changes.feedsChanged) getFeeds().then(feeds => populateFeeds(feeds));
 });
 
 // Cat section

@@ -1,4 +1,5 @@
 import { populateEntries } from "./populate";
+import { getFeeds } from "../background/feedsInterface";
 import "./popup.scss";
 
 // Open settings
@@ -37,7 +38,7 @@ document.getElementById("clear")!.addEventListener("click", async () => {
 		entries: [],
 		read: []
 	});
-  const feeds : Feed[]= (await browser.storage.sync.get({feeds: []})).feeds;
+  const feeds  = await getFeeds();
   const dispAll = document.getElementById("catAll")!.classList.contains("selected");
   const dispCats = Array.from(document.getElementById("catSelect")!.querySelectorAll(".selected"),(el)=>el.textContent);
   function shouldDisplay(url : string) {

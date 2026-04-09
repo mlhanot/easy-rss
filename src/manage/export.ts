@@ -1,3 +1,5 @@
+import { getFeeds } from "../background/feedsInterface";
+
 const link = document.getElementById("download") as HTMLAnchorElement;
 
 const validXML10regex = /[^\u{0009}\u{000A}\u{000D}\u{0020}-\u{007E}\u{0085}\u{00A0}-\u{D7FF}\u{E000}-\u{FFFD}\u{10000}-\u{10FFFF}]/gu;
@@ -18,9 +20,8 @@ function genXMLFeedEntry(f: Feed) {
 }
 
 async function exportFeeds(): Promise<void> {
-  const data = await browser.storage.sync.get({ feeds: [], cats: [] });
-	const feeds: Feed[] = data.feeds;
-  const cats: string[] = data.cats;
+	const feeds: Feed[] = await getFeeds();
+  const cats: string[] = (await browser.storage.sync.get({cats: []})).cats;
 
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <opml version="2.0">

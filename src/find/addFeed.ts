@@ -1,5 +1,7 @@
+import {getFeeds, setFeeds} from "../background/feedsInterface";
+
 async function addFeed(newfeed: Feed): Promise<void> {
-	const oldFeeds: Feed[] = (await browser.storage.sync.get({ feeds: [] })).feeds;
+	const oldFeeds = await getFeeds();
 
 	if (oldFeeds.some(f => f.url === newfeed.url)) {
     console.log("Refusing to add duplicate entry: ");
@@ -7,7 +9,7 @@ async function addFeed(newfeed: Feed): Promise<void> {
     return;
   }
   oldFeeds.push(newfeed);
-  browser.storage.sync.set({ feeds: oldFeeds as unknown as StorageValue});
+  setFeeds(oldFeeds);
 }
 
 export {addFeed};

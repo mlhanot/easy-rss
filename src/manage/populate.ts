@@ -1,3 +1,5 @@
+import { getFeeds, setFeeds } from "../background/feedsInterface";
+
 const feedTemplate = document.getElementById("feed") as HTMLTemplateElement;
 const catTemplate = document.getElementById("catItem") as HTMLTemplateElement;
 const feedsEl = document.getElementById("feeds")!;
@@ -24,19 +26,19 @@ async function populateFeeds(feeds: Feed[]): Promise<void> {
 		name.value = feed.name;
 		name.addEventListener("change", () => {
 			feeds[i].name = name.value;
-			browser.storage.sync.set({ feeds: feeds as unknown as StorageValue });
+      setFeeds(feeds);
 		});
 
 		const url = el.querySelector(".url") as HTMLInputElement;
 		url.value = feed.url;
 		url.addEventListener("change", () => {
 			feeds[i].url = url.value;
-			browser.storage.sync.set({ feeds: feeds as unknown as StorageValue });
+      setFeeds(feeds);
 		});
 
 		el.querySelector(".delete")!.addEventListener("click", () => {
 			feeds.splice(i, 1);
-			browser.storage.sync.set({ feeds: feeds as unknown as StorageValue });
+      setFeeds(feeds);
 		});
 
     const catsCont = el.querySelector(".feedCat") as HTMLElement;
@@ -46,7 +48,7 @@ async function populateFeeds(feeds: Feed[]): Promise<void> {
       catName.textContent = cat;
       elCat.querySelector(".delete")!.addEventListener("click", () => {
         feeds[i].cats.splice(j,1);
-			  browser.storage.sync.set({ feeds: feeds as unknown as StorageValue });
+        setFeeds(feeds);
       });
       catsCont.appendChild(elCat);
     });
@@ -56,7 +58,7 @@ async function populateFeeds(feeds: Feed[]): Promise<void> {
       const newcats = Array.from(addCatSelect.querySelectorAll(".selected"),(cat: Element)=>cat.textContent??"");
       if (newcats.length > 0) {
         feed.cats.push(...newcats); // Spread operator, transform the array into several arguments
-			  browser.storage.sync.set({ feeds: feeds as unknown as StorageValue });
+        setFeeds(feeds);
       }
       cleanupAddCat();
     }
