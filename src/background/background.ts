@@ -28,7 +28,9 @@ async function fetchFeeds() {
 		toFetch.push(fetchEntries(feed));
 	}
 
-	const entries = ([] as Entry[]).concat(...(await Promise.all(toFetch)));
+  const entries : Entry[] = (await browser.storage.local.get({entries: []})).entries;
+	const newEntries = ([] as Entry[]).concat(...(await Promise.all(toFetch)));
+  newEntries.forEach((nE) => (entries.some((cE) => nE.id === cE.id) ? null : entries.push(nE)));
 	entries.sort(sorter);
 
   if (entries.length == 0) { // onChanged is not fired when nothing is pushed
