@@ -1,18 +1,38 @@
 import { getFeeds } from "../background/feedsInterface";
 
 const entryTemplate = document.getElementById("entry") as HTMLTemplateElement;
+const requestPermTemplate = document.getElementById("requestPerms") as HTMLTemplateElement;
 const entriesEl = document.getElementById("entries")!;
+
+function setupRequest(missingPerms: string[]) {
+  const el = document.importNode(requestPermTemplate.content, true);
+  const elUl = el.querySelector(".requestList")!;
+  for (const missing of missingPerms) {
+    const il = document.createElement("li");
+    il.textContent = missing;
+    elUl.appendChild(il);
+  }
+  el.querySelector("button")!.addEventListener("click",()=> {
+    browser.permissions.request({origins: missingPerms});
+  });
+	entriesEl.appendChild(el);
+}
 
 async function populateEntries(): Promise<void> {
 	const {
 		entries,
-		read
-	}: { entries: Entry[]; read: string[] } = await browser.storage.local.get({
+		read,
+    missingPerms
+	} = await browser.storage.local.get({
 		entries: [],
-		read: []
+		read: [],
+    missingPerms: []
 	});
 
 	while (entriesEl.lastChild) entriesEl.removeChild(entriesEl.lastChild);
+  if (missingPerms.length > 0) {
+    setupRequest(missingPerms);
+  }
 
 	let unread = 0;
 	for (const entry of entries) if (read.indexOf(entry.id) === -1) unread++;

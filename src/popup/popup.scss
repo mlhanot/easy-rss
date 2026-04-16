@@ -107,6 +107,22 @@ $nav-height: 38px;
   text-align: center;
 }
 
+.requestForm {
+  border-style: double;
+  background: $ink-70;
+  text-align: center;
+  padding: 0.5em;
+  margin: 0.5em;
+  border-radius: 15px;
+  .explanation::first-letter {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  button {
+    width: fit-content;
+  }
+}
+
 .entry {
   display: grid;
   grid-gap: 0.5em;

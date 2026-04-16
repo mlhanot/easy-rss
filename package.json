@@ -1,6 +1,6 @@
 {
 	"name": "easier-rss",
-	"version": "2.2.1",
+	"version": "2.2.2",
 	"repository": "git@github.com:mlhanot/easy-rss.git",
 	"author": "Sr Komodo <komodosr@gmail.com>",
   "contributors": [
@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^7.2.0",
 		"@typescript-eslint/parser": "^7.2.0",
+    "@types/firefox-webext-browser": "^143.0.0",
 		"eslint": "^8.57.0",
 		"typescript": "^5.4.2",
 		"ts-loader": "^9.5.1",

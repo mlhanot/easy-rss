@@ -24,6 +24,7 @@ async function addFeedUI(): Promise<void> {
                       catItem.getElementsByTagName("span")[0].textContent??"");
   }
   check.addEventListener("click", () => {
+    browser.permissions.request({origins: [(new URL(url.value)).origin + "/*"]});
     addFeed({name: name.value, url: url.value, 
             cats: getCatsArray()});
     name.value = '';

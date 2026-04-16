@@ -34,7 +34,7 @@ document.getElementById("clear")!.addEventListener("click", async () => {
 	const {
 		entries,
 		read
-	}: { entries: Entry[]; read: string[] } = await browser.storage.local.get({
+	} = await browser.storage.local.get({
 		entries: [],
 		read: []
 	});
