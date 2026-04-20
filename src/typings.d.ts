@@ -4,6 +4,11 @@ interface Feed {
   cats: string[];
 }
 
+interface FetchCounter {
+  url: string;
+  counter: number;
+}
+
 interface Entry {
 	id: string;
 	title: string;

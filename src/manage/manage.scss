@@ -39,6 +39,9 @@ section {
   & input[type=checkbox] {
     align-self: baseline;
   }
+  & input[type=number] {
+    border-radius: 6px;
+  }
   & output {
     margin: 1ex;
   }

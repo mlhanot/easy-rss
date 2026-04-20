@@ -7,7 +7,8 @@ const sorter = (a: Entry, b: Entry) =>
 	new Date(b.date).getTime() - new Date(a.date).getTime();
 
 async function fetchFeeds() {
-  const displayText : boolean = !(await browser.storage.sync.get({hideBadgeText: false})).hideBadgeText;
+  const syncStore = await browser.storage.sync.get({hideBadgeText: false, batch: 10});
+  const displayText : boolean = !syncStore.hideBadgeText;
 	browser.browserAction.setBadgeBackgroundColor({ color: "#3b88c3" });
   if (displayText) {
   	browser.browserAction.setBadgeText({ text: "🕒" });
@@ -23,10 +24,28 @@ async function fetchFeeds() {
     }
   }
   
+  const {feedsCounters, fetchCounter } = await browser.storage.local.get({feedsCounters: [], fetchCounter: 0});
 	const toFetch: Array<Promise<Entry[]>> = [];
+  let pushed = 0;
 	for (const feed of feeds) {
-		toFetch.push(fetchEntries(feed));
+    const feedIndex = feedsCounters.findIndex((el: FetchCounter)=>el.url===feed.url);
+    if (feedIndex < 0) {
+      pushed = pushed + 1;
+      feedsCounters.push({url: feed.url, counter: fetchCounter});
+  		toFetch.push(fetchEntries(feed));
+      if (pushed === syncStore.batch) break;
+    } else if (feedsCounters[feedIndex].counter !== fetchCounter) {
+      pushed = pushed + 1;
+      feedsCounters[feedIndex].counter = fetchCounter;
+  		toFetch.push(fetchEntries(feed));
+      if (pushed === syncStore.batch) break;
+    }
 	}
+  if (pushed < syncStore.batch) {
+    browser.storage.local.set({feedsCounters: feedsCounters, fetchCounter: fetchCounter + 1});
+  } else {
+    browser.storage.local.set({feedsCounters: feedsCounters});
+  }
 
   const entries : Entry[] = (await browser.storage.local.get({entries: []})).entries;
 	const newEntries = ([] as Entry[]).concat(...(await Promise.all(toFetch)));

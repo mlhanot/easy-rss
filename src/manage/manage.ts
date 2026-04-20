@@ -6,6 +6,7 @@ import { getFeeds } from "../background/feedsInterface";
 // Settings section
 const interval = document.getElementById("interval") as HTMLInputElement;
 const intervalOutput = document.getElementById("intervalOutput")!;
+const fetchBatch = document.getElementById("fetchBatch") as HTMLInputElement;
 const fetchDuration = document.getElementById("fetchDuration") as HTMLInputElement;
 const expandMenu = document.getElementById("expandMenu") as HTMLInputElement;
 const hideBadgeTextMenu = document.getElementById("hideBadgeTextMenu") as HTMLInputElement;
@@ -15,6 +16,7 @@ const minutes = (s: string) => `${s} ${s === "1" ? "minute" : "minutes"}`;
 
 saveSettings.addEventListener("click", () => {
 	browser.storage.sync.set({ interval: parseInt(interval.value, 10), 
+                           batch: parseInt(fetchBatch.value, 10),
                            fetchDuration: fetchDuration.checked,
                            expandMenu: expandMenu.checked,
                            hideBadgeText: hideBadgeTextMenu.checked
@@ -26,9 +28,10 @@ interval.addEventListener("input", () => {
 
 // Init page
 const extVersion = browser.runtime.getManifest().version;
-browser.storage.sync.get({ interval: 5, fetchDuration: false, expandMenu: false, hideBadgeText: false, cats: [] }).then(results => {
+browser.storage.sync.get({ interval: 5, batch: 10, fetchDuration: false, expandMenu: false, hideBadgeText: false, cats: [] }).then(results => {
 	interval.value = results.interval.toString();
 	intervalOutput.textContent = minutes(results.interval.toString());
+  fetchBatch.value = results.batch.toString();
   fetchDuration.checked = results.fetchDuration;
   expandMenu.checked = results.expandMenu;
   populateCats(results.cats);
