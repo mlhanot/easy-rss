@@ -191,6 +191,43 @@ h2 {
   }
 }
 
+#categories {
+  display: flex;
+  margin-bottom: 1em;
+  #catAll,#catNone {
+    @include hover;
+    align-self: center;
+    padding: 0 1ex 0.5ex 1ex;
+    margin: 1px 1ex 0 1ex;
+    height: fit-content;
+    &.selected {
+      background: $ink-50;
+    }
+  }
+  #catAll {
+    border-right: 2px inset white;
+    border-radius: 8px 0 0 8px;
+  }
+  #catNone {
+    border-left: 2px inset white;
+    border-radius: 0 8px 8px 0;
+  }
+  #catSelect {
+    display: flex;
+    overflow: scroll;
+    align-items: safe center;
+    div {
+      @include hover;
+      border-radius: 8px;
+      height: fit-content;
+      padding: 0 1ex 0.5ex 1ex;
+    }
+    div.selected {
+      background: $ink-50;
+    }
+  }
+}
+
 #addFeed {
   z-index: 2;
 }
@@ -224,6 +261,9 @@ h2 {
     .cloud_item {
       background-color: $ink-70;
     }
+  }
+  &.disabled {
+    display: none;
   }
 }
 

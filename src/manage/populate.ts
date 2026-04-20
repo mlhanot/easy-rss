@@ -93,4 +93,31 @@ async function populateFeeds(feeds: Feed[]): Promise<void> {
 	});
 }
 
-export { populateFeeds };
+function markFeeds() {
+  const dispAll = document.getElementById("catAll")!.classList.contains("selected");
+  const dispCats = Array.from(document.getElementById("catSelect")!.querySelectorAll(".selected"),(el)=>el.textContent);
+  const dispNone = document.getElementById("catNone")!.classList.contains("selected");
+  const feedList = feedsEl.querySelectorAll(".feed");
+  for (const feed of feedList) {
+    if (dispAll) {
+      feed.classList.remove("disabled");
+    } else {
+      const catList = Array.from(feed.querySelectorAll(".feedCat span"),(el)=>el.textContent);
+      if (dispNone) {
+        if (catList.length > 0) {
+          feed.classList.add("disabled");
+        } else {
+          feed.classList.remove("disabled");
+        }
+      } else { // Neither all nor none
+        if (dispCats.some((cat) => catList.includes(cat))) {
+          feed.classList.remove("disabled");
+        } else {
+          feed.classList.add("disabled");
+        }
+      }
+    }
+  } // for feed of feedList
+}
+
+export { populateFeeds, markFeeds };

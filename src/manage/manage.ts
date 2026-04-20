@@ -76,6 +76,31 @@ const importEl = document.getElementById("import")!;
 importEl.addEventListener("click", () => upload.click());
 upload.addEventListener("change", importFeeds);
 
+import { createMultiSelect } from "../ui/select";
+import { markFeeds } from "./populate";
+const catSelectEl = document.getElementById("catSelect")!;
+const catAllEl = document.getElementById("catAll")!;
+const catNoneEl = document.getElementById("catNone")!;
+catAllEl.classList.add("selected");
+catSelectEl.addEventListener("click",createMultiSelect,true);
+catSelectEl.addEventListener("click",() => {
+  catAllEl.classList.remove("selected");
+  catNoneEl.classList.remove("selected");
+  markFeeds();
+});
+catAllEl.addEventListener("click",()=> {
+  catSelectEl.querySelectorAll(".selected").forEach((el)=>el.classList.remove("selected"));
+  catAllEl.classList.add("selected");
+  catNoneEl.classList.remove("selected");
+  markFeeds();
+});
+catNoneEl.addEventListener("click",()=> {
+  catSelectEl.querySelectorAll(".selected").forEach((el)=>el.classList.remove("selected"));
+  catNoneEl.classList.add("selected");
+  catAllEl.classList.remove("selected");
+  markFeeds();
+});
+
 import { addFeedUI } from "./addFeed";
 addFeedUI();
 document.getElementById("addFeed")!.addEventListener("click", () => {
@@ -83,5 +108,4 @@ document.getElementById("addFeed")!.addEventListener("click", () => {
   document.getElementById("newfeed")!.style.display = 'block';
 });
 
-import { createMultiSelect } from "../ui/select";
 document.getElementById("addFeedCatSelect")!.addEventListener("click",createMultiSelect,true);

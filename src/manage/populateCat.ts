@@ -2,9 +2,11 @@ import { getFeeds, setFeeds } from "../background/feedsInterface";
 
 const catTemplate = document.getElementById("catItem") as HTMLTemplateElement;
 const catListEl = document.getElementById("CatList")!;
+const catSelectEl = document.getElementById("catSelect")!;
 
 async function populateCats(cats: string[]): Promise<void> {
 	while (catListEl.lastChild) catListEl.removeChild(catListEl.lastChild);
+	while (catSelectEl.lastChild) catSelectEl.removeChild(catSelectEl.lastChild);
 
 	if (cats.length === 0) {
 		const text = document.createElement("div");
@@ -33,6 +35,11 @@ async function populateCats(cats: string[]): Promise<void> {
 		});
 
 		catListEl.appendChild(el);
+
+    // Feeds section
+    const text = document.createElement("div");
+    text.textContent = cat;
+    catSelectEl.appendChild(text);
 	});
 }
 
